@@ -136,22 +136,22 @@ export default function Hero({ setActiveView }) {
       >
         
         {/* BACKGROUND ELEMENTS */}
-        {/* Bold Retro Serif Text "por" */}
+        {/* Bold Retro Serif Text */}
         <div style={{
           position: 'absolute',
           fontFamily: 'var(--font-display)',
-          fontSize: isMobile ? '140px' : '280px',
+          fontSize: isMobile ? '80px' : '150px',
           fontWeight: '900',
-          color: 'var(--color-secondary)',
-          top: isMobile ? '120px' : '20px',
-          right: isMobile ? '15%' : '25%',
-          opacity: 0.9,
+          color: 'var(--text-secondary)',
+          top: isMobile ? '120px' : '60px',
+          right: '15%',
+          opacity: 0.1,
           zIndex: 1,
           pointerEvents: 'none',
           userSelect: 'none',
-          letterSpacing: '-15px',
+          letterSpacing: '5px',
         }}>
-          por
+          VIDIT
         </div>
 
         {/* Technical Grid/Ruler Line */}
@@ -307,16 +307,11 @@ export default function Hero({ setActiveView }) {
         {/* 1. Stand Color Checker Stand Card (Right side) */}
         <motion.div 
           ref={checkerRef}
-          drag
-          dragConstraints={containerRef}
-          dragElastic={0.1}
-          dragMomentum={false}
-          onDrag={() => setDragTick(t => t + 1)}
           className="draggable-node"
           style={{
             position: 'absolute',
-            right: isMobile ? '2%' : '12%',
-            top: isMobile ? '40px' : '60px',
+            right: isMobile ? '10%' : '25%',
+            top: isMobile ? '40px' : '80px',
             zIndex: 10,
           }}
         >
@@ -352,16 +347,11 @@ export default function Hero({ setActiveView }) {
         {/* 2. Photoshop Icon (Left side) */}
         <motion.div 
           ref={psRef}
-          drag
-          dragConstraints={containerRef}
-          dragElastic={0.1}
-          dragMomentum={false}
-          onDrag={() => setDragTick(t => t + 1)}
           className="draggable-node"
           style={{
             position: 'absolute',
-            left: isMobile ? '5%' : '10%',
-            top: isMobile ? '70px' : '120px',
+            left: isMobile ? '15%' : '28%',
+            top: isMobile ? '70px' : '150px',
             zIndex: 10,
           }}
         >
@@ -374,16 +364,11 @@ export default function Hero({ setActiveView }) {
         {/* 3. Color Wheel (Center Top) */}
         <motion.div 
           ref={wheelRef}
-          drag
-          dragConstraints={containerRef}
-          dragElastic={0.1}
-          dragMomentum={false}
-          onDrag={() => setDragTick(t => t + 1)}
           className="draggable-node"
           style={{
             position: 'absolute',
-            left: isMobile ? '38%' : '35%',
-            top: isMobile ? '30px' : '50px',
+            left: isMobile ? '42%' : '48%',
+            top: isMobile ? '30px' : '60px',
             zIndex: 10,
           }}
         >
@@ -396,16 +381,11 @@ export default function Hero({ setActiveView }) {
         {/* 4. Stylus Drawing Pen (Floating next to camera) */}
         <motion.div 
           ref={stylusRef}
-          drag
-          dragConstraints={containerRef}
-          dragElastic={0.1}
-          dragMomentum={false}
-          onDrag={() => setDragTick(t => t + 1)}
           className="draggable-node"
           style={{
             position: 'absolute',
-            left: isMobile ? '52%' : '58%',
-            top: isMobile ? '180px' : '230px',
+            left: isMobile ? '55%' : '56%',
+            top: isMobile ? '160px' : '180px',
             zIndex: 11,
           }}
         >
@@ -429,16 +409,11 @@ export default function Hero({ setActiveView }) {
         {/* 5. Camera Lens Helios 44-2 (Center Bottom) */}
         <motion.div 
           ref={lensRef}
-          drag
-          dragConstraints={containerRef}
-          dragElastic={0.1}
-          dragMomentum={false}
-          onDrag={() => setDragTick(t => t + 1)}
           className="draggable-node"
           style={{
             position: 'absolute',
-            left: isMobile ? '12%' : '30%',
-            bottom: isMobile ? '30px' : '20px',
+            left: isMobile ? '35%' : '42%',
+            bottom: isMobile ? '60px' : '100px',
             zIndex: 12,
           }}
         >
@@ -478,19 +453,14 @@ export default function Hero({ setActiveView }) {
           </div>
         </motion.div>
 
-        {/* 6. Bright Green Glossy 3D Sphere (Right Side) */}
+        {/* 6. Green Matrix Sphere (Top Right) */}
         <motion.div 
           ref={sphereRef}
-          drag
-          dragConstraints={containerRef}
-          dragElastic={0.1}
-          dragMomentum={false}
-          onDrag={() => setDragTick(t => t + 1)}
           className="draggable-node"
           style={{
             position: 'absolute',
-            right: isMobile ? '8%' : '18%',
-            bottom: isMobile ? '50px' : '100px',
+            right: isMobile ? '20%' : '35%',
+            top: isMobile ? '20px' : '20px',
             zIndex: 10,
           }}
         >
