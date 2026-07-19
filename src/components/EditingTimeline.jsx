@@ -106,6 +106,10 @@ export default function EditingTimeline() {
             </div>
           </div>
 
+          {/* Scrollable Tracks Wrapper for Mobile Responsiveness */}
+          <div style={{ overflowX: 'auto', width: '100%', scrollbarWidth: 'thin' }}>
+            <div style={{ minWidth: '800px', position: 'relative' }}>
+
           {/* Time Ruler (Seconds indicators) */}
           <div style={{
             height: '25px',
@@ -265,8 +269,10 @@ export default function EditingTimeline() {
                 </div>
               );
             })}
+            </div>
           </div>
         </div>
+      </div>
 
         {/* Effect Controls Panel */}
         <div style={{

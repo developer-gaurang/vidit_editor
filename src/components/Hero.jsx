@@ -413,7 +413,7 @@ export default function Hero({ setActiveView }) {
             style={{
               width: '100%',
               maxWidth: '800px',
-              height: '340px',
+              height: 'clamp(180px, 45vw, 340px)',
               margin: '0 auto',
               position: 'relative',
               borderRadius: '12px',

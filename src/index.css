@@ -806,3 +806,76 @@ html, body {
   transform: translateY(1px);
   box-shadow: 1px 1px 0px var(--text-primary) !important;
 }
+
+/* Mobile & Responsive Layout Enhancements */
+
+/* Horizontal navigation scrollable list on mobile */
+.nav-links-container {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar IE/Edge */
+}
+.nav-links-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Webkit */
+}
+
+@media (min-width: 900px) {
+  .nav-links-container {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
+/* Program Monitor Screen Area */
+.monitor-screen-area {
+  display: flex;
+  background-color: #0c0d13;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .monitor-screen-area {
+    flex-direction: row;
+  }
+}
+
+/* Program Monitor VU Meter Panel */
+.monitor-vu-panel {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .monitor-vu-panel {
+    display: flex !important;
+    width: 50px;
+    border-left: 2.5px solid var(--text-primary);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    gap: 10px;
+    background-color: #eae9e4;
+  }
+}
+
+/* Hide background graphics on small mobile screens to keep layouts clean and readable */
+@media (max-width: 767px) {
+  .grid-cinematic {
+    background-image: none !important;
+  }
+  
+  /* Downscale the collage absolute items */
+  .floating-slow, .floating-medium, .floating-fast, .collage-lens, .collage-ps-icon, .collage-color-wheel, .collage-sphere {
+    display: none !important; /* Hide floating collage blocks on mobile for layout readability */
+  }
+  
+  .timeline-track::before {
+    font-size: 10px !important;
+  }
+}
+

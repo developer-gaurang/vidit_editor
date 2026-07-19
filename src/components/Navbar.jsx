@@ -180,12 +180,7 @@ export default function Navbar({ activeView, setActiveView, theme, setTheme, sou
         </div>
 
         {/* Links */}
-        <div style={{
-          display: 'flex',
-          gap: '4px',
-          alignItems: 'center',
-          flexWrap: 'wrap'
-        }}>
+        <div className="nav-links-container">
           {menuItems.map((item) => {
             const isActive = activeView === item.id;
             return (
@@ -202,7 +197,8 @@ export default function Navbar({ activeView, setActiveView, theme, setTheme, sou
                   fontSize: '13px',
                   transition: 'all 0.2s ease',
                   borderRadius: '6px 6px 0 0',
-                  fontWeight: isActive ? 'bold' : '600'
+                  fontWeight: isActive ? 'bold' : '600',
+                  flexShrink: 0
                 }}
               >
                 {item.label}

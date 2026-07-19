@@ -318,7 +318,7 @@ export default function PortfolioGrid() {
             height: '100%',
             backgroundColor: 'rgba(30, 27, 75, 0.75)',
             backdropFilter: 'blur(4px)',
-            zIndex: 1000,
+            zIndex: 9000,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -381,14 +381,13 @@ export default function PortfolioGrid() {
               </div>
 
               {/* Main Monitor Screen Area */}
-              <div style={{
-                display: 'flex',
-                backgroundColor: '#0c0d13',
-                borderBottom: '2px solid var(--text-primary)',
-                position: 'relative',
-                flexDirection: 'row',
-                flexWrap: 'wrap'
-              }}>
+              <div 
+                className="monitor-screen-area"
+                style={{
+                  borderBottom: '2.5px solid var(--text-primary)',
+                  position: 'relative',
+                }}
+              >
                 
                 {/* Simulated Viewer Screen */}
                 <div style={{
@@ -470,17 +469,7 @@ export default function PortfolioGrid() {
                 </div>
 
                 {/* Right Side Panel: Audio VU meters (Light Frame, colorful indicators) */}
-                <div style={{
-                  width: '50px',
-                  borderLeft: '2.5px solid var(--text-primary)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '10px 0',
-                  gap: '10px',
-                  backgroundColor: '#eae9e4',
-                }}>
+                <div className="monitor-vu-panel">
                   <span style={{ fontSize: '9px', fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', fontWeight: 'bold' }}>CH 1/2</span>
                   <div style={{ display: 'flex', gap: '5px' }}>
                     {/* Left VU */}
