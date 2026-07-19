@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { playTick, playClick } from '../utils/audioEffects';
 
 const apps = [
@@ -9,67 +10,94 @@ const apps = [
   { name: 'Figma', category: 'Layout Grids & visual hierarchy', color: '#1e1b4b', textColor: '#f43f5e', border: '#10b981' }
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2 }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
 export default function AboutVidit() {
   return (
     <section id="about" style={{
-      padding: '80px 20px',
-      backgroundColor: 'var(--bg-deep)',
-      borderBottom: '2.5px solid var(--text-primary)',
-      backgroundImage: 'linear-gradient(rgba(30, 27, 75, 0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(30, 27, 75, 0.01) 1px, transparent 1px)',
-      backgroundSize: '20px 20px',
+      padding: '100px 20px',
+      position: 'relative',
+      overflow: 'hidden'
     }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        
-        {/* Section Grid */}
+      {/* Ambient background glow */}
+      <div style={{
+        position: 'absolute',
+        top: '20%',
+        left: '-10%',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, var(--color-primary) 0%, transparent 70%)',
+        opacity: 0.1,
+        filter: 'blur(60px)',
+        zIndex: 0
+      }}></div>
+
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        style={{ width: '100%', padding: '0 5vw', margin: '0 auto', position: 'relative', zIndex: 1 }}
+      >
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '40px',
+          gap: '60px',
           alignItems: 'center',
         }}>
           
           {/* Column 1: Narrative bio */}
-          <div style={{
-            backgroundColor: 'var(--bg-panel)',
-            border: '3px solid var(--text-primary)',
-            borderRadius: '12px',
-            padding: '35px',
-            boxShadow: '6px 6px 0px var(--text-primary)',
-          }}>
+          <motion.div variants={itemVariants} className="glass-panel" style={{ padding: '40px', marginBottom: 0 }}>
             <div style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '12px',
+              fontSize: '13px',
               color: 'var(--color-secondary)',
               fontWeight: '700',
               textTransform: 'uppercase',
-              marginBottom: '10px',
-              letterSpacing: '1px',
+              marginBottom: '15px',
+              letterSpacing: '2px',
+              textShadow: '0 0 10px rgba(176, 38, 255, 0.4)'
             }}>
-              [ BIO PROFILE ]
+              // INIT BIO_PROFILE
             </div>
 
-            <h2 className="title-glow" style={{
-              fontSize: '36px',
+            <h2 style={{
+              fontSize: '42px',
               fontFamily: 'var(--font-display)',
-              marginBottom: '20px',
+              marginBottom: '25px',
+              background: 'linear-gradient(135deg, #fff 0%, var(--color-primary) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textShadow: '0 0 20px rgba(0, 240, 255, 0.3)'
             }}>
               ABOUT VIDIT
             </h2>
 
             <p style={{
               color: 'var(--text-primary)',
-              fontSize: '15px',
-              lineHeight: '1.7',
+              fontSize: '16px',
+              lineHeight: '1.8',
               marginBottom: '20px',
-              fontWeight: '500',
+              fontWeight: '400',
             }}>
               Hey there! I am Vidit Kesarwani, a video editor and colorist passionate about turning flat, raw clips into high-energy, narrative-driven digital content. I don't just cut frames—I structure sequences to capture attention, align to the beat, and drive retention.
             </p>
             <p style={{
               color: 'var(--text-secondary)',
-              fontSize: '14px',
-              lineHeight: '1.6',
-              marginBottom: '20px',
+              fontSize: '15px',
+              lineHeight: '1.7',
+              marginBottom: '30px',
             }}>
               By combining Figma grids for asset layout, Photoshop for graphic overlays, Premiere/Resolve for surgical cuts, and After Effects for kinetic text transitions, I compile every timeline clip with maximum precision. From reels to brand documentaries, my goal is to deliver export files that stand out in any feed.
             </p>
@@ -77,33 +105,39 @@ export default function AboutVidit() {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '15px',
+              gap: '20px',
               marginTop: '30px',
-              paddingTop: '20px',
-              borderTop: '2px dashed var(--border-muted)',
+              paddingTop: '25px',
+              borderTop: '1px solid var(--border-muted)',
             }}>
-              <div style={{
-                width: '50px',
-                height: '50px',
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, var(--color-primary), var(--color-secondary))',
-                border: '2px solid var(--text-primary)',
-              }}></div>
+              <motion.div 
+                animate={{ boxShadow: ['0 0 10px var(--color-primary)', '0 0 25px var(--color-secondary)', '0 0 10px var(--color-primary)'] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
+                  border: '2px solid rgba(255, 255, 255, 0.2)',
+                }}
+              />
               <div>
-                <div style={{ fontWeight: 'bold', fontSize: '15px' }}>Vidit Kesarwani</div>
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>Editor & Color Science Tech</div>
+                <div style={{ fontWeight: 'bold', fontSize: '18px', color: '#fff' }}>Vidit Kesarwani</div>
+                <div style={{ fontSize: '13px', color: 'var(--color-primary)', fontFamily: 'var(--font-mono)' }}>Editor & Color Science Tech</div>
               </div>
             </div>
 
             {/* Quick Contact Buttons */}
             <div style={{
               display: 'flex',
-              gap: '10px',
-              marginTop: '20px',
+              gap: '15px',
+              marginTop: '30px',
               flexWrap: 'wrap'
             }}>
               {/* WhatsApp Button */}
-              <a
+              <motion.a
+                whileHover={{ scale: 1.05, boxShadow: '0 0 20px #25d366' }}
+                whileTap={{ scale: 0.95 }}
                 href="https://wa.me/919999999999?text=Hi%20Vidit%2C%20I%20saw%20your%20video%20editing%20portfolio%20and%20would%20love%20to%20discuss%20a%20project!"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -111,155 +145,113 @@ export default function AboutVidit() {
                 onMouseDown={() => playClick()}
                 style={{
                   flex: 1,
-                  minWidth: '100px',
+                  minWidth: '110px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '8px',
-                  backgroundColor: '#25d366',
-                  color: '#ffffff',
+                  backgroundColor: 'rgba(37, 211, 102, 0.1)',
+                  color: '#25d366',
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '12px',
+                  fontSize: '13px',
                   fontWeight: 'bold',
                   textDecoration: 'none',
-                  padding: '10px 14px',
-                  borderRadius: '6px',
-                  border: '2px solid var(--text-primary)',
-                  boxShadow: '3px 3px 0px var(--text-primary)',
-                  transition: 'transform 0.1s ease, box-shadow 0.1s ease',
+                  padding: '12px 16px',
+                  borderRadius: '8px',
+                  border: '1px solid #25d366',
                   cursor: 'pointer'
                 }}
-                className="contact-btn-hover"
               >
                 <span>💬</span> WhatsApp
-              </a>
-
-              {/* Instagram Button */}
-              <a
-                href="https://www.instagram.com/vidit_kesarwani/"
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={() => playTick()}
-                onMouseDown={() => playClick()}
-                style={{
-                  flex: 1,
-                  minWidth: '100px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
-                  color: '#ffffff',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '12px',
-                  fontWeight: 'bold',
-                  textDecoration: 'none',
-                  padding: '10px 14px',
-                  borderRadius: '6px',
-                  border: '2px solid var(--text-primary)',
-                  boxShadow: '3px 3px 0px var(--text-primary)',
-                  transition: 'transform 0.1s ease, box-shadow 0.1s ease',
-                  cursor: 'pointer'
-                }}
-                className="contact-btn-hover"
-              >
-                <span>📸</span> Instagram
-              </a>
+              </motion.a>
 
               {/* Call Button */}
-              <a
+              <motion.a
+                whileHover={{ scale: 1.05, boxShadow: '0 0 20px var(--color-primary)' }}
+                whileTap={{ scale: 0.95 }}
                 href="tel:+919999999999"
                 onMouseEnter={() => playTick()}
                 onMouseDown={() => playClick()}
                 style={{
                   flex: 1,
-                  minWidth: '100px',
+                  minWidth: '110px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '8px',
-                  backgroundColor: 'var(--color-primary)',
-                  color: '#ffffff',
+                  backgroundColor: 'rgba(0, 240, 255, 0.1)',
+                  color: 'var(--color-primary)',
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '12px',
+                  fontSize: '13px',
                   fontWeight: 'bold',
                   textDecoration: 'none',
-                  padding: '10px 14px',
-                  borderRadius: '6px',
-                  border: '2px solid var(--text-primary)',
-                  boxShadow: '3px 3px 0px var(--text-primary)',
-                  transition: 'transform 0.1s ease, box-shadow 0.1s ease',
+                  padding: '12px 16px',
+                  borderRadius: '8px',
+                  border: '1px solid var(--color-primary)',
                   cursor: 'pointer'
                 }}
-                className="contact-btn-hover"
               >
                 <span>📞</span> Call Now
-              </a>
+              </motion.a>
             </div>
-          </div>
+          </motion.div>
 
           {/* Column 2: Creative Skill stack & software */}
-          <div>
+          <motion.div variants={itemVariants}>
             <h3 style={{
               fontFamily: 'var(--font-display)',
-              fontSize: '26px',
-              color: 'var(--text-primary)',
-              marginBottom: '25px',
-              letterSpacing: '-1px',
+              fontSize: '32px',
+              color: '#fff',
+              marginBottom: '35px',
+              letterSpacing: '1px',
+              textShadow: '0 0 15px rgba(255,255,255,0.2)'
             }}>
-              CREATIVE PIPELINE & APPS
+              CREATIVE PIPELINE
             </h3>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {apps.map((app, idx) => (
-                <div 
+                <motion.div 
                   key={idx}
+                  whileHover={{ scale: 1.02, x: 10, backgroundColor: 'rgba(25, 25, 40, 0.8)' }}
                   style={{
-                    backgroundColor: 'var(--bg-panel)',
-                    border: '2px solid var(--text-primary)',
-                    borderRadius: '8px',
-                    padding: '16px 20px',
+                    background: 'rgba(15, 15, 25, 0.5)',
+                    border: '1px solid var(--border-muted)',
+                    borderRadius: '12px',
+                    padding: '20px 24px',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    transition: 'all 0.2s ease',
-                    boxShadow: '3px 3px 0px var(--text-primary)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '5px 5px 0px var(--color-primary)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '3px 3px 0px var(--text-primary)';
+                    backdropFilter: 'blur(10px)',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
                   }}
                 >
                   <div>
-                    <h4 style={{ fontSize: '16px', fontWeight: '700', color: 'var(--text-primary)' }}>{app.name}</h4>
-                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{app.category}</span>
+                    <h4 style={{ fontSize: '18px', fontWeight: '700', color: '#fff', marginBottom: '4px' }}>{app.name}</h4>
+                    <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{app.category}</span>
                   </div>
 
                   <div style={{
-                    backgroundColor: app.color,
-                    color: app.textColor,
-                    border: `1.5px solid ${app.border}`,
-                    borderRadius: '4px',
-                    padding: '4px 8px',
-                    fontSize: '10px',
+                    backgroundColor: 'rgba(0, 240, 255, 0.1)',
+                    color: 'var(--color-primary)',
+                    border: `1px solid var(--color-primary)`,
+                    borderRadius: '6px',
+                    padding: '6px 12px',
+                    fontSize: '11px',
                     fontFamily: 'var(--font-mono)',
                     fontWeight: 'bold',
                     textTransform: 'uppercase',
+                    boxShadow: '0 0 10px rgba(0,240,255,0.2)'
                   }}>
                     READY
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
         </div>
-
-      </div>
+      </motion.div>
     </section>
   );
 }

@@ -202,75 +202,29 @@ export default function App() {
               <Hero setActiveView={handleNavigate} />
             </div>
 
-            {/* About Vidit Panel */}
-            <div className="nle-panel" style={{ maxWidth: '1200px', margin: '40px auto 60px auto' }}>
-              <div className="nle-panel-header">
-                <div className="nle-panel-tabs">
-                  <div className="nle-panel-tab active" onClick={() => handleNavigate('about')}>👤 Essential Graphics</div>
-                  <div className="nle-panel-tab" onClick={() => handleNavigate('about')}>ℹ️ Profile Info</div>
-                </div>
-                <div className="nle-panel-menu-dot">☰</div>
-              </div>
-              <div id="about">
-                <AboutVidit />
-              </div>
+            {/* About Vidit Section */}
+            <div id="about" style={{ width: '100%', margin: '80px 0', position: 'relative', zIndex: 10 }}>
+              <AboutVidit />
             </div>
 
-            {/* Showcase / Portfolio Grid Panel */}
-            <div className="nle-panel" style={{ maxWidth: '1200px', margin: '0 auto 60px auto' }}>
-              <div className="nle-panel-header">
-                <div className="nle-panel-tabs">
-                  <div className="nle-panel-tab active" onClick={() => handleNavigate('portfolio')}>📂 Media Browser</div>
-                  <div className="nle-panel-tab" onClick={() => handleNavigate('portfolio')}>📀 Project: Vidit_Bin</div>
-                  <div className="nle-panel-tab" onClick={() => handleNavigate('portfolio')}>⚡ Libraries</div>
-                </div>
-                <div className="nle-panel-menu-dot">☰</div>
-              </div>
-              <div id="portfolio">
-                <PortfolioGrid />
-              </div>
+            {/* Showcase / Portfolio Section */}
+            <div id="portfolio" style={{ width: '100%', margin: '80px 0', position: 'relative', zIndex: 10 }}>
+              <PortfolioGrid />
             </div>
 
-            {/* Editor Timeline Panel */}
-            <div className="nle-panel" style={{ maxWidth: '1200px', margin: '0 auto 60px auto' }}>
-              <div className="nle-panel-header">
-                <div className="nle-panel-tabs">
-                  <div className="nle-panel-tab active" onClick={() => handleNavigate('timeline')}>⏱ Timeline: Sequence_01</div>
-                  <div className="nle-panel-tab" onClick={() => handleNavigate('timeline')}>⚙️ Audio Track Mixer</div>
-                </div>
-                <div className="nle-panel-menu-dot">☰</div>
-              </div>
-              <div id="timeline">
-                <EditingTimeline />
-              </div>
+            {/* Editor Timeline Section */}
+            <div id="timeline" style={{ width: '100%', margin: '80px 0', position: 'relative', zIndex: 10 }}>
+              <EditingTimeline />
             </div>
 
-            {/* Services Panel */}
-            <div className="nle-panel" style={{ maxWidth: '1200px', margin: '0 auto 60px auto' }}>
-              <div className="nle-panel-header">
-                <div className="nle-panel-tabs">
-                  <div className="nle-panel-tab active" onClick={() => handleNavigate('services')}>🛠 Effects Browser</div>
-                  <div className="nle-panel-tab" onClick={() => handleNavigate('services')}>🎨 Lumetri Color</div>
-                </div>
-                <div className="nle-panel-menu-dot">☰</div>
-              </div>
-              <div id="services">
-                <Services />
-              </div>
+            {/* Services Section */}
+            <div id="services" style={{ width: '100%', margin: '80px 0', position: 'relative', zIndex: 10 }}>
+              <Services />
             </div>
 
-            {/* Inquiry / Contact Form Panel */}
-            <div className="nle-panel" style={{ maxWidth: '1200px', margin: '0 auto 60px auto' }}>
-              <div className="nle-panel-header">
-                <div className="nle-panel-tabs">
-                  <div className="nle-panel-tab active" onClick={() => handleNavigate('contact')}>📥 Export Settings</div>
-                  <div className="nle-panel-tab" onClick={() => handleNavigate('contact')}>📝 XMP Metadata</div>
-                </div>
-                <div className="nle-panel-menu-dot">☰</div>
-              </div>
-              <div id="contact">
-                <ContactForm />
-              </div>
+            {/* Inquiry / Contact Form Section */}
+            <div id="contact" style={{ width: '100%', margin: '80px 0', position: 'relative', zIndex: 10 }}>
+              <ContactForm />
             </div>
           </>
         )}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const servicesList = [
   {
@@ -56,28 +57,64 @@ const servicesList = [
   }
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 30, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } }
+};
+
 export default function Services() {
   return (
     <section style={{
-      padding: '80px 20px',
-      backgroundColor: 'var(--bg-deep)',
-      borderBottom: '2.5px solid var(--text-primary)',
+      padding: '100px 20px',
+      position: 'relative',
+      overflow: 'hidden'
     }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      {/* Ambient background glow */}
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        right: '-10%',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, var(--color-secondary) 0%, transparent 70%)',
+        opacity: 0.08,
+        filter: 'blur(60px)',
+        zIndex: 0
+      }}></div>
+
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        style={{ width: '100%', padding: '0 5vw', margin: '0 auto', position: 'relative', zIndex: 1 }}
+      >
         
         {/* Title */}
-        <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-          <h2 className="title-glow" style={{
+        <motion.div variants={itemVariants} style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <h2 style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '42px',
-            marginBottom: '15px'
+            fontSize: '48px',
+            marginBottom: '15px',
+            background: 'linear-gradient(135deg, #fff 0%, var(--color-primary) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            textShadow: '0 0 30px rgba(0, 240, 255, 0.4)'
           }}>
             POST-PRODUCTION TOOLKIT
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontWeight: '500' }}>
+          <p style={{ color: 'var(--text-secondary)', margin: '0 auto', fontSize: '16px' }}>
             A comprehensive suite of video capabilities tailored to make your digital content compete at a studio-broadcast level.
           </p>
-        </div>
+        </motion.div>
 
         {/* Services Grid */}
         <div style={{
@@ -86,66 +123,58 @@ export default function Services() {
           gap: '30px',
         }}>
           {servicesList.map((service, index) => (
-            <div
+            <motion.div
+              variants={itemVariants}
+              whileHover={{ y: -10, scale: 1.02 }}
               key={index}
               style={{
-                backgroundColor: 'var(--bg-panel)',
-                border: '3px solid var(--text-primary)',
-                borderRadius: '12px',
-                padding: '30px 25px',
-                transition: 'all 0.25s ease',
+                background: 'rgba(15, 15, 25, 0.5)',
+                border: '1px solid var(--border-muted)',
+                borderRadius: '16px',
+                padding: '40px 30px',
                 position: 'relative',
                 overflow: 'hidden',
-                boxShadow: '4px 4px 0px var(--text-primary)',
+                backdropFilter: 'blur(10px)',
+                boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.2)',
+                cursor: 'pointer'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = 'var(--color-primary)';
-                e.currentTarget.style.transform = 'translate(-4px, -4px)';
-                e.currentTarget.style.boxShadow = '8px 8px 0px var(--color-primary)';
+                e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 240, 255, 0.2)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--text-primary)';
-                e.currentTarget.style.transform = 'translate(0, 0)';
-                e.currentTarget.style.boxShadow = '4px 4px 0px var(--text-primary)';
+                e.currentTarget.style.borderColor = 'var(--border-muted)';
+                e.currentTarget.style.boxShadow = '0 8px 32px 0 rgba(0, 0, 0, 0.2)';
               }}
             >
-              {/* Scanline Corner Element */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                width: '60px',
-                height: '60px',
-                background: 'linear-gradient(135deg, transparent 50%, rgba(37, 99, 235, 0.05) 50%)',
-                pointerEvents: 'none',
-              }}></div>
-
               {/* Icon Container */}
-              <div style={{
-                backgroundColor: 'var(--bg-surface)',
-                border: '2px solid var(--text-primary)',
-                borderRadius: '8px',
-                width: '60px',
-                height: '60px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '25px',
-                color: 'var(--text-primary)',
-                boxShadow: '2px 2px 0px var(--text-primary)',
-              }}>
+              <motion.div 
+                whileHover={{ rotate: 5, scale: 1.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(176, 38, 255, 0.1))',
+                  border: '1px solid rgba(0, 240, 255, 0.3)',
+                  borderRadius: '12px',
+                  width: '70px',
+                  height: '70px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '25px',
+                  color: '#fff',
+                  boxShadow: '0 0 15px rgba(0, 240, 255, 0.15)',
+                }}>
                 {service.icon}
-              </div>
+              </motion.div>
 
               {/* Toolbar Tool Label */}
               <div style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                color: 'var(--text-secondary)',
+                fontSize: '12px',
+                color: 'var(--color-primary)',
                 fontWeight: 'bold',
-                marginBottom: '8px',
+                marginBottom: '10px',
                 textTransform: 'uppercase',
-                letterSpacing: '1px',
+                letterSpacing: '1.5px',
               }}>
                 {service.toolName}
               </div>
@@ -153,10 +182,10 @@ export default function Services() {
               {/* Service Title */}
               <h4 style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '19px',
+                fontSize: '22px',
                 fontWeight: '700',
-                color: 'var(--text-primary)',
-                marginBottom: '12px',
+                color: '#fff',
+                marginBottom: '15px',
               }}>
                 {service.title}
               </h4>
@@ -164,41 +193,17 @@ export default function Services() {
               {/* Description */}
               <p style={{
                 color: 'var(--text-secondary)',
-                fontSize: '14px',
-                lineHeight: '1.6',
-                fontWeight: '500',
+                fontSize: '15px',
+                lineHeight: '1.7',
+                fontWeight: '400',
               }}>
                 {service.desc}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* Visual decoration: Film strip ticker */}
-        <div style={{ marginTop: '70px' }}>
-          <div className="film-roll">
-            <div className="film-strip">
-              {[
-                'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=240&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=240&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=240&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=240&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=240&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=240&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=240&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=240&auto=format&fit=crop'
-              ].map((img, i) => (
-                <div 
-                  key={i} 
-                  className="film-frame"
-                  style={{ backgroundImage: `url(${img})` }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-      </div>
+      </motion.div>
     </section>
   );
 }

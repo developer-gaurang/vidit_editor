@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const projects = [
   {
@@ -148,166 +149,159 @@ export default function PortfolioGrid() {
   return (
     <section style={{
       padding: '80px 20px',
-      backgroundColor: 'var(--bg-deep)',
-      borderBottom: '2.5px solid var(--text-primary)',
+      position: 'relative',
+      zIndex: 10
     }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ width: '100%', padding: '0 5vw', margin: '0 auto' }}>
         
         {/* Title */}
-        <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-          <h2 className="title-glow" style={{
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{ textAlign: 'center', marginBottom: '50px' }}
+        >
+          <h2 style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '42px',
-            marginBottom: '15px'
+            fontSize: '48px',
+            marginBottom: '15px',
+            background: 'linear-gradient(135deg, #fff 0%, var(--color-primary) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            textShadow: '0 0 30px rgba(0, 240, 255, 0.4)'
           }}>
-            PROJECT BIN (PORTFOLIO)
+            PROJECT BIN
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontWeight: '500' }}>
+          <p style={{ color: 'var(--text-secondary)', margin: '0 auto', fontSize: '16px' }}>
             Browse through some of my finest cuts, color grades, and edits. Select a sequence to load it in the viewport monitor.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Premiere Bin Tabs / Categories (Light Theme) */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '12px',
-          marginBottom: '40px',
-          borderBottom: '2px solid var(--text-primary)',
-          paddingBottom: '15px',
-          flexWrap: 'wrap'
-        }}>
+        {/* Categories */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '15px',
+            marginBottom: '50px',
+            flexWrap: 'wrap'
+          }}
+        >
           {[
-            { id: 'all', label: '🎥 All Assets' },
-            { id: 'reels', label: '🎬 Reels & Shorts' },
-            { id: 'cinematic', label: '🏔️ Cinematic Documentaries' },
-            { id: 'commercials', label: '🔥 Commercial Promos' },
-            { id: 'vlogs', label: '🧭 Travel & Vlogs' }
+            { id: 'all', label: 'All Assets' },
+            { id: 'reels', label: 'Reels & Shorts' },
+            { id: 'cinematic', label: 'Cinematic' },
+            { id: 'commercials', label: 'Commercials' },
+            { id: 'vlogs', label: 'Travel & Vlogs' }
           ].map(tab => (
-            <button
+            <motion.button
               key={tab.id}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setFilter(tab.id)}
               style={{
-                backgroundColor: filter === tab.id ? 'var(--color-primary)' : 'var(--bg-panel)',
-                color: filter === tab.id ? '#ffffff' : 'var(--text-primary)',
-                border: '2px solid var(--text-primary)',
-                borderRadius: '6px',
-                padding: '8px 16px',
+                backgroundColor: filter === tab.id ? 'rgba(0, 240, 255, 0.15)' : 'rgba(25, 25, 40, 0.5)',
+                color: filter === tab.id ? 'var(--color-primary)' : 'var(--text-secondary)',
+                border: filter === tab.id ? '1px solid var(--color-primary)' : '1px solid var(--border-muted)',
+                borderRadius: '20px',
+                padding: '10px 24px',
                 fontFamily: 'var(--font-mono)',
-                fontSize: '13px',
-                fontWeight: 'bold',
-                transition: 'all 0.2s ease',
-                boxShadow: filter === tab.id ? '2px 2px 0px var(--text-primary)' : '3px 3px 0px var(--text-primary)',
-                transform: filter === tab.id ? 'translate(1px, 1px)' : 'none',
+                fontSize: '14px',
+                fontWeight: '600',
+                transition: 'all 0.3s ease',
+                boxShadow: filter === tab.id ? '0 0 15px rgba(0,240,255,0.3)' : 'none',
+                cursor: 'pointer',
+                backdropFilter: 'blur(10px)'
               }}
             >
               {tab.label}
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Project Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: '30px',
-        }}>
-          {filteredProjects.map(project => (
-            <div
-              key={project.id}
-              className="project-card"
-              onClick={() => openProject(project)}
-            >
-              {/* Thumbnail image */}
-              <div style={{
-                position: 'relative',
-                width: '100%',
-                paddingTop: '56.25%', // 16:9 aspect ratio
-                background: `url(${project.thumbnail}) center/cover no-repeat`,
-                borderBottom: '2px solid var(--text-primary)',
-              }}>
-                {/* Tech specifications label */}
+        <motion.div 
+          layout
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: '30px',
+          }}
+        >
+          <AnimatePresence>
+            {filteredProjects.map(project => (
+              <motion.div
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4 }}
+                whileHover={{ y: -10, boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}
+                key={project.id}
+                onClick={() => openProject(project)}
+                style={{
+                  background: 'rgba(15, 15, 25, 0.6)',
+                  border: '1px solid var(--border-muted)',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                {/* Thumbnail image */}
                 <div style={{
-                  position: 'absolute',
-                  top: '10px',
-                  left: '10px',
-                  backgroundColor: '#ffffff',
-                  padding: '3px 8px',
-                  borderRadius: '4px',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '10px',
-                  color: 'var(--text-primary)',
-                  fontWeight: 'bold',
-                  border: '1.5px solid var(--text-primary)',
-                  zIndex: 1,
-                  boxShadow: '1.5px 1.5px 0px var(--text-primary)',
+                  position: 'relative',
+                  width: '100%',
+                  paddingTop: '56.25%',
+                  background: `url(${project.thumbnail}) center/cover no-repeat`,
                 }}>
-                  {project.duration}
+                  {/* Tech specifications label */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '12px',
+                    left: '12px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    padding: '4px 10px',
+                    borderRadius: '6px',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '11px',
+                    color: 'var(--color-primary)',
+                    fontWeight: 'bold',
+                    border: '1px solid var(--color-primary)',
+                    backdropFilter: 'blur(4px)',
+                    zIndex: 1,
+                  }}>
+                    {project.duration}
+                  </div>
                 </div>
-              </div>
 
-              {/* Card info bottom */}
-              <div style={{ padding: '20px' }}>
-                <h4 style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '17px',
-                  fontWeight: '700',
-                  color: 'var(--text-primary)',
-                  marginBottom: '5px',
-                }}>
-                  {project.title}
-                </h4>
-                <div style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '11px',
-                  color: 'var(--text-secondary)',
-                  fontWeight: '600',
-                }}>
-                  {project.software}
+                {/* Card info bottom */}
+                <div style={{ padding: '24px' }}>
+                  <h4 style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '18px',
+                    fontWeight: '700',
+                    color: '#fff',
+                    marginBottom: '8px',
+                  }}>
+                    {project.title}
+                  </h4>
+                  <div style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '13px',
+                    color: 'var(--color-secondary)',
+                    fontWeight: '600',
+                  }}>
+                    {project.software}
+                  </div>
                 </div>
-              </div>
-
-              {/* View/Hover Overlay */}
-              <div className="card-overlay">
-                <div style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--color-primary)',
-                  border: '2.5px solid var(--text-primary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '15px',
-                  boxShadow: '3px 3px 0px var(--text-primary)',
-                }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 5V19L19 12L8 5Z" fill="#ffffff" />
-                  </svg>
-                </div>
-                <h5 style={{
-                  color: 'var(--text-primary)',
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '16px',
-                  textTransform: 'uppercase',
-                  fontWeight: '800',
-                  marginBottom: '5px'
-                }}>
-                  Load in Viewport
-                </h5>
-                <p style={{
-                  color: 'var(--text-secondary)',
-                  fontSize: '12px',
-                  lineHeight: '1.4',
-                  fontWeight: '500',
-                }}>
-                  {project.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
         {/* Viewport Editor Modal (Light Theme Monitor Console) */}
         {selectedProject && (
           <div style={{

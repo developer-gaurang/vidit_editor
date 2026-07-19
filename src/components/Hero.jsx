@@ -1,9 +1,56 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 export default function Hero({ setActiveView }) {
   const [scrollOffset, setScrollOffset] = useState(0);
   const [sliderPosition, setSliderPosition] = useState(50);
   const sliderContainerRef = useRef(null);
+
+  // Refs for draggable nodes and container
+  const containerRef = useRef(null);
+  const psRef = useRef(null);
+  const wheelRef = useRef(null);
+  const lensRef = useRef(null);
+  const sphereRef = useRef(null);
+  const checkerRef = useRef(null);
+  const stylusRef = useRef(null);
+
+  // State to force-update connecting lines during active drag
+  const [dragTick, setDragTick] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect and track mobile vs. desktop viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Helper to compute node centers relative to the parent container
+  const getCenterCoords = (elRef) => {
+    if (!elRef.current || !containerRef.current) return { x: 0, y: 0 };
+    const rect = elRef.current.getBoundingClientRect();
+    const parentRect = containerRef.current.getBoundingClientRect();
+    return {
+      x: Math.round((rect.left + rect.width / 2) - parentRect.left),
+      y: Math.round((rect.top + rect.height / 2) - parentRect.top)
+    };
+  };
+
+  // Helper to render high-tech HUD coordinate readout and status badge
+  const renderHud = (elRef, name, status) => {
+    const coords = getCenterCoords(elRef);
+    if (!coords.x && !coords.y) return null;
+    return (
+      <>
+        <div className="hud-label">{name} (X:{coords.x} Y:{coords.y})</div>
+        <div className="hud-badge">{status}</div>
+      </>
+    );
+  };
 
   // Monitor scroll for the dynamic fade-out and slide-down animation
   useEffect(() => {
@@ -70,32 +117,34 @@ export default function Hero({ setActiveView }) {
     }}>
       
       {/* 1. SCROLL FADING COLLAGE CONTAINER */}
-      <div style={{
-        width: '100%',
-        maxWidth: '1000px',
-        height: '520px',
-        position: 'relative',
-        margin: '20px auto 40px auto',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        opacity: opacity,
-        transform: `translateY(${translateY}px)`,
-        transition: 'opacity 0.05s ease-out, transform 0.05s ease-out',
-        zIndex: 10,
-        pointerEvents: opacity < 0.1 ? 'none' : 'auto',
-      }}>
+      <div 
+        ref={containerRef}
+        style={{
+          width: '100vw',
+          height: isMobile ? '460px' : '650px',
+          position: 'relative',
+          margin: '20px auto 40px auto',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          opacity: opacity,
+          transform: `translateY(${translateY}px)`,
+          transition: 'opacity 0.05s ease-out, transform 0.05s ease-out',
+          zIndex: 10,
+          pointerEvents: opacity < 0.1 ? 'none' : 'auto',
+        }}
+      >
         
         {/* BACKGROUND ELEMENTS */}
         {/* Bold Retro Serif Text "por" */}
         <div style={{
           position: 'absolute',
           fontFamily: 'var(--font-display)',
-          fontSize: '280px',
+          fontSize: isMobile ? '140px' : '280px',
           fontWeight: '900',
           color: 'var(--color-secondary)',
-          top: '20px',
-          right: '25%',
+          top: isMobile ? '120px' : '20px',
+          right: isMobile ? '15%' : '25%',
           opacity: 0.9,
           zIndex: 1,
           pointerEvents: 'none',
@@ -109,7 +158,7 @@ export default function Hero({ setActiveView }) {
         <div style={{
           position: 'absolute',
           width: '2px',
-          height: '450px',
+          height: isMobile ? '380px' : '480px',
           backgroundColor: 'rgba(239, 68, 68, 0.4)',
           left: '52%',
           top: '20px',
@@ -119,172 +168,339 @@ export default function Hero({ setActiveView }) {
         {/* Rulers / Guides overlay */}
         <div style={{
           position: 'absolute',
-          width: '350px',
+          width: isMobile ? '180px' : '350px',
           height: '2px',
           backgroundColor: 'rgba(30, 27, 75, 0.1)',
           left: '20%',
-          top: '320px',
+          top: isMobile ? '240px' : '320px',
           transform: 'rotate(-15deg)',
           zIndex: 1,
         }}></div>
 
-        {/* Stand Color Checker Stand Card (Right side) */}
-        <div className="floating-slow" style={{
-          position: 'absolute',
-          right: '12%',
-          top: '60px',
-          zIndex: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
-          {/* Grey/Black Spheres on top of checker */}
-          <div style={{ display: 'flex', gap: '20px', marginBottom: '-5px', zIndex: 5 }}>
-            <div style={{ width: '35px', height: '35px', borderRadius: '50%', background: 'radial-gradient(circle at 35% 35%, #555, #111)', boxShadow: '0 4px 6px rgba(0,0,0,0.2)' }}></div>
-            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'radial-gradient(circle at 35% 35%, #bbb, #555)', boxShadow: '0 4px 6px rgba(0,0,0,0.2)' }}></div>
-          </div>
-          {/* Color card */}
-          <div className="collage-color-checker">
-            {/* 24 square grid of calibration colors */}
-            {['#3c221a', '#e0a986', '#597cb3', '#5a623f', '#7faad7', '#5db197',
-              '#e68235', '#49449a', '#c34e56', '#502a5c', '#98c13f', '#e6a61a',
-              '#2c3272', '#418239', '#8e1b21', '#ebca12', '#c34d89', '#138cb4',
-              '#ffffff', '#c7c7c7', '#939393', '#5e5e5e', '#363636', '#000000'
-            ].map((col, idx) => (
-              <div key={idx} style={{ backgroundColor: col, width: '100%', height: '100%', border: '0.5px solid #000' }}></div>
-            ))}
-          </div>
-          {/* Card Stand pole */}
-          <div style={{ width: '3px', height: '150px', backgroundColor: 'var(--text-primary)', marginTop: '-1px' }}></div>
-          <div style={{ width: '40px', height: '3px', backgroundColor: 'var(--text-primary)' }}></div>
-        </div>
-
-        {/* Photoshop Icon (Left side) */}
-        <div className="collage-ps-icon floating-medium" style={{
-          position: 'absolute',
-          left: '10%',
-          top: '120px',
-          zIndex: 3,
-        }}>
-          Ps
-        </div>
-
-        {/* Figma Logo representation / Bezier curves */}
-        {/* Dynamic Vector Bezier Path Overlay */}
+        {/* Dynamic Vector Bezier Path Overlay & Connecting Lines */}
         <svg style={{
           position: 'absolute',
-          left: '8%',
-          top: '200px',
-          width: '350px',
-          height: '250px',
-          zIndex: 4,
+          left: 0,
+          top: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 2,
           pointerEvents: 'none',
         }}>
-          <path
-            d="M 50,180 C 120,20 200,220 280,10"
-            fill="none"
-            stroke="url(#gradient-path)"
-            strokeWidth="8"
-            strokeLinecap="round"
-          />
-          {/* Gradient definitions */}
           <defs>
             <linearGradient id="gradient-path" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="var(--color-primary)" />
               <stop offset="50%" stopColor="var(--color-secondary)" />
               <stop offset="100%" stopColor="var(--color-orange)" />
             </linearGradient>
+            
+            {/* Glow Filter */}
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="6" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
           </defs>
-          
-          {/* Anchor Handles */}
-          <line x1="50" y1="180" x2="120" y2="20" stroke="#ff3b30" strokeWidth="1.5" strokeDasharray="3,3" />
-          <line x1="280" y1="10" x2="200" y2="220" stroke="#ff3b30" strokeWidth="1.5" strokeDasharray="3,3" />
-          
-          {/* Interactive anchor boxes */}
-          <rect x="46" y="176" width="8" height="8" fill="#fff" stroke="#ff3b30" strokeWidth="1.5" />
-          <rect x="276" y="6" width="8" height="8" fill="#fff" stroke="#ff3b30" strokeWidth="1.5" />
-          <circle cx="120" cy="20" r="4" fill="#ff3b30" />
-          <circle cx="200" cy="220" r="4" fill="#ff3b30" />
-          
-          {/* Blue vector cursor arrow */}
-          <polygon points="120,40 120,20 135,28" fill="#00f0ff" stroke="#000" strokeWidth="1" transform="rotate(-15, 120, 20)" />
+
+          {(() => {
+            const psCenter = getCenterCoords(psRef);
+            const wheelCenter = getCenterCoords(wheelRef);
+            const lensCenter = getCenterCoords(lensRef);
+            const sphereCenter = getCenterCoords(sphereRef);
+            const checkerCenter = getCenterCoords(checkerRef);
+            const stylusCenter = getCenterCoords(stylusRef);
+
+            return (
+              <>
+                {/* 1. Dashed neon line: Wheel <-> Lens */}
+                {wheelCenter.x && lensCenter.x ? (
+                  <path
+                    d={`M ${wheelCenter.x},${wheelCenter.y} L ${lensCenter.x},${lensCenter.y}`}
+                    fill="none"
+                    stroke="#ec4899"
+                    strokeWidth="2.5"
+                    strokeDasharray="6,6"
+                    opacity="0.6"
+                    filter="url(#glow)"
+                  />
+                ) : null}
+
+                {/* 2. Neon cyan line: Lens <-> Stylus */}
+                {lensCenter.x && stylusCenter.x ? (
+                  <path
+                    d={`M ${lensCenter.x},${lensCenter.y} L ${stylusCenter.x},${stylusCenter.y}`}
+                    fill="none"
+                    stroke="#00f0ff"
+                    strokeWidth="2"
+                    opacity="0.7"
+                    filter="url(#glow)"
+                  />
+                ) : null}
+
+                {/* 3. Neon green line: Checker <-> Sphere */}
+                {checkerCenter.x && sphereCenter.x ? (
+                  <path
+                    d={`M ${checkerCenter.x},${checkerCenter.y} L ${sphereCenter.x},${sphereCenter.y}`}
+                    fill="none"
+                    stroke="#10b981"
+                    strokeWidth="2"
+                    strokeDasharray="4,4"
+                    opacity="0.6"
+                    filter="url(#glow)"
+                  />
+                ) : null}
+
+                {/* 4. Interactive Figma Bezier Path: Photoshop <-> Camera Lens */}
+                {(() => {
+                  if (!psCenter.x || !lensCenter.x) return null;
+                  const startPt = psCenter;
+                  const endPt = lensCenter;
+                  
+                  // Dynamic control points
+                  const cp1 = { x: startPt.x + (isMobile ? 30 : 90), y: startPt.y - (isMobile ? 50 : 150) };
+                  const cp2 = { x: endPt.x - (isMobile ? 40 : 100), y: endPt.y - (isMobile ? 30 : 60) };
+
+                  return (
+                    <>
+                      {/* Main curve */}
+                      <path
+                        d={`M ${startPt.x},${startPt.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${endPt.x},${endPt.y}`}
+                        fill="none"
+                        stroke="url(#gradient-path)"
+                        strokeWidth={isMobile ? "5" : "8"}
+                        strokeLinecap="round"
+                        filter="url(#glow)"
+                      />
+
+                      {/* Anchor Handles */}
+                      <line x1={startPt.x} y1={startPt.y} x2={cp1.x} y2={cp1.y} stroke="#ff3b30" strokeWidth="1.5" strokeDasharray="3,3" opacity="0.8" />
+                      <line x1={endPt.x} y1={endPt.y} x2={cp2.x} y2={cp2.y} stroke="#ff3b30" strokeWidth="1.5" strokeDasharray="3,3" opacity="0.8" />
+                      
+                      {/* Anchor boxes */}
+                      <rect x={startPt.x - 4} y={startPt.y - 4} width="8" height="8" fill="#fff" stroke="#ff3b30" strokeWidth="1.5" />
+                      <rect x={endPt.x - 4} y={endPt.y - 4} width="8" height="8" fill="#fff" stroke="#ff3b30" strokeWidth="1.5" />
+                      
+                      {/* Control circles */}
+                      <circle cx={cp1.x} cy={cp1.y} r="4.5" fill="#ff3b30" />
+                      <circle cx={cp2.x} cy={cp2.y} r="4.5" fill="#ff3b30" />
+                      
+                      {/* Blue vector cursor arrow pointing to control point 1 */}
+                      <polygon 
+                        points={`${cp1.x},${cp1.y + 20} ${cp1.x},${cp1.y} ${cp1.x + 15},${cp1.y + 8}`} 
+                        fill="#00f0ff" 
+                        stroke="#000" 
+                        strokeWidth="1" 
+                        transform={`rotate(-15, ${cp1.x}, ${cp1.y})`} 
+                      />
+                    </>
+                  );
+                })()}
+              </>
+            );
+          })()}
         </svg>
 
-        {/* Color Wheel (Center Top) */}
-        <div className="collage-color-wheel floating-slow" style={{
-          position: 'absolute',
-          left: '35%',
-          top: '50px',
-          zIndex: 3,
-        }}>
-          <div className="collage-color-wheel-center"></div>
-        </div>
+        {/* DRAGGABLE NODE INTERACTIVE ELEMENTS */}
 
-        {/* Stylus Drawing Pen (Floating next to camera) */}
-        <div className="floating-fast" style={{
-          position: 'absolute',
-          left: '58%',
-          top: '230px',
-          width: '12px',
-          height: '240px',
-          background: 'linear-gradient(180deg, #18181b 0%, #3f3f46 70%, #71717a 90%, #00f0ff 100%)',
-          border: '1.5px solid var(--text-primary)',
-          borderRadius: '6px',
-          transform: 'rotate(5deg)',
-          zIndex: 6,
-          boxShadow: '4px 8px 15px rgba(0,0,0,0.2)',
-        }}>
-          {/* Clip detailing stylus */}
-          <div style={{ width: '100%', height: '4px', backgroundColor: '#e4e4e7', marginTop: '140px' }}></div>
-          <div style={{ width: '100%', height: '8px', backgroundColor: '#a1a1aa', marginTop: '10px' }}></div>
-        </div>
-
-        {/* Camera Lens Helios 44-2 (Center Bottom) */}
-        <div className="collage-lens floating-medium" style={{
-          position: 'absolute',
-          left: '30%',
-          bottom: '20px',
-          zIndex: 5,
-          border: '12px solid var(--text-primary)',
-          boxShadow: '10px 15px 30px rgba(0,0,0,0.3)',
-        }}>
-          <div className="collage-lens-reflection"></div>
-          <div className="collage-lens-reflection2"></div>
-          {/* Lens text prints */}
-          <div style={{
-            color: 'rgba(255,255,255,0.4)',
-            fontSize: '10px',
-            fontFamily: 'var(--font-mono)',
+        {/* 1. Stand Color Checker Stand Card (Right side) */}
+        <motion.div 
+          ref={checkerRef}
+          drag
+          dragConstraints={containerRef}
+          dragElastic={0.1}
+          dragMomentum={false}
+          onDrag={() => setDragTick(t => t + 1)}
+          className="draggable-node"
+          style={{
             position: 'absolute',
-            textAlign: 'center',
-            width: '100%',
-            top: '20px',
-            pointerEvents: 'none',
+            right: isMobile ? '2%' : '12%',
+            top: isMobile ? '40px' : '60px',
+            zIndex: 10,
+          }}
+        >
+          <div className="floating-slow" style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            position: 'relative'
           }}>
-            HELIOS 44-2 58mm f:2
+            {/* Grey/Black Spheres on top of checker */}
+            <div style={{ display: 'flex', gap: isMobile ? '10px' : '20px', marginBottom: '-5px', zIndex: 5 }}>
+              <div style={{ width: isMobile ? '20px' : '35px', height: isMobile ? '20px' : '35px', borderRadius: '50%', background: 'radial-gradient(circle at 35% 35%, #555, #111)', boxShadow: '0 4px 6px rgba(0,0,0,0.2)' }}></div>
+              <div style={{ width: isMobile ? '24px' : '40px', height: isMobile ? '24px' : '40px', borderRadius: '50%', background: 'radial-gradient(circle at 35% 35%, #bbb, #555)', boxShadow: '0 4px 6px rgba(0,0,0,0.2)' }}></div>
+            </div>
+            {/* Color card */}
+            <div className="collage-color-checker">
+              {['#3c221a', '#e0a986', '#597cb3', '#5a623f', '#7faad7', '#5db197',
+                '#e68235', '#49449a', '#c34e56', '#502a5c', '#98c13f', '#e6a61a',
+                '#2c3272', '#418239', '#8e1b21', '#ebca12', '#c34d89', '#138cb4',
+                '#ffffff', '#c7c7c7', '#939393', '#5e5e5e', '#363636', '#000000'
+              ].map((col, idx) => (
+                <div key={idx} style={{ backgroundColor: col, width: '100%', height: '100%', border: '0.5px solid #000' }}></div>
+              ))}
+            </div>
+            {/* Card Stand pole */}
+            <div style={{ width: '3px', height: isMobile ? '70px' : '150px', backgroundColor: 'var(--text-primary)', marginTop: '-1px' }}></div>
+            <div style={{ width: isMobile ? '25px' : '40px', height: '3px', backgroundColor: 'var(--text-primary)' }}></div>
+            
+            {renderHud(checkerRef, "COLOR_CHECKER", "CALIBRATION_GRID")}
           </div>
-          <div style={{
-            color: 'rgba(255,255,255,0.25)',
-            fontSize: '9px',
-            fontFamily: 'var(--font-mono)',
-            position: 'absolute',
-            textAlign: 'center',
-            width: '100%',
-            bottom: '22px',
-            pointerEvents: 'none',
-          }}>
-            Nº 8213456
-          </div>
-        </div>
+        </motion.div>
 
-        {/* Bright Green Glossy 3D Sphere (Right Side) */}
-        <div className="collage-sphere floating-slow" style={{
-          position: 'absolute',
-          right: '18%',
-          bottom: '100px',
-          zIndex: 4,
-          border: '3px solid var(--text-primary)',
-        }}></div>
+        {/* 2. Photoshop Icon (Left side) */}
+        <motion.div 
+          ref={psRef}
+          drag
+          dragConstraints={containerRef}
+          dragElastic={0.1}
+          dragMomentum={false}
+          onDrag={() => setDragTick(t => t + 1)}
+          className="draggable-node"
+          style={{
+            position: 'absolute',
+            left: isMobile ? '5%' : '10%',
+            top: isMobile ? '70px' : '120px',
+            zIndex: 10,
+          }}
+        >
+          <div className="collage-ps-icon floating-medium" style={{ position: 'relative' }}>
+            Ps
+            {renderHud(psRef, "PHOTOSHOP", "PSD_ENV_01")}
+          </div>
+        </motion.div>
+
+        {/* 3. Color Wheel (Center Top) */}
+        <motion.div 
+          ref={wheelRef}
+          drag
+          dragConstraints={containerRef}
+          dragElastic={0.1}
+          dragMomentum={false}
+          onDrag={() => setDragTick(t => t + 1)}
+          className="draggable-node"
+          style={{
+            position: 'absolute',
+            left: isMobile ? '38%' : '35%',
+            top: isMobile ? '30px' : '50px',
+            zIndex: 10,
+          }}
+        >
+          <div className="collage-color-wheel floating-slow" style={{ position: 'relative' }}>
+            <div className="collage-color-wheel-center"></div>
+            {renderHud(wheelRef, "COLOR_WHEEL", "LUT_RGB_CALIBRATED")}
+          </div>
+        </motion.div>
+
+        {/* 4. Stylus Drawing Pen (Floating next to camera) */}
+        <motion.div 
+          ref={stylusRef}
+          drag
+          dragConstraints={containerRef}
+          dragElastic={0.1}
+          dragMomentum={false}
+          onDrag={() => setDragTick(t => t + 1)}
+          className="draggable-node"
+          style={{
+            position: 'absolute',
+            left: isMobile ? '52%' : '58%',
+            top: isMobile ? '180px' : '230px',
+            zIndex: 11,
+          }}
+        >
+          <div className="floating-fast" style={{
+            width: isMobile ? '8px' : '12px',
+            height: isMobile ? '150px' : '240px',
+            background: 'linear-gradient(180deg, #18181b 0%, #3f3f46 70%, #71717a 90%, #00f0ff 100%)',
+            border: '1.5px solid var(--text-primary)',
+            borderRadius: '6px',
+            transform: 'rotate(5deg)',
+            boxShadow: '4px 8px 15px rgba(0,0,0,0.2)',
+            position: 'relative'
+          }}>
+            {/* Clip detailing stylus */}
+            <div style={{ width: '100%', height: '4px', backgroundColor: '#e4e4e7', marginTop: isMobile ? '90px' : '140px' }}></div>
+            <div style={{ width: '100%', height: '8px', backgroundColor: '#a1a1aa', marginTop: '10px' }}></div>
+            {renderHud(stylusRef, "VECT_PEN", "STYLUS_V1")}
+          </div>
+        </motion.div>
+
+        {/* 5. Camera Lens Helios 44-2 (Center Bottom) */}
+        <motion.div 
+          ref={lensRef}
+          drag
+          dragConstraints={containerRef}
+          dragElastic={0.1}
+          dragMomentum={false}
+          onDrag={() => setDragTick(t => t + 1)}
+          className="draggable-node"
+          style={{
+            position: 'absolute',
+            left: isMobile ? '12%' : '30%',
+            bottom: isMobile ? '30px' : '20px',
+            zIndex: 12,
+          }}
+        >
+          <div className="collage-lens floating-medium" style={{
+            border: isMobile ? '6px solid var(--text-primary)' : '12px solid var(--text-primary)',
+            boxShadow: '10px 15px 30px rgba(0,0,0,0.3)',
+            position: 'relative'
+          }}>
+            <div className="collage-lens-reflection"></div>
+            <div className="collage-lens-reflection2"></div>
+            {/* Lens text prints */}
+            <div style={{
+              color: 'rgba(255,255,255,0.4)',
+              fontSize: isMobile ? '6px' : '10px',
+              fontFamily: 'var(--font-mono)',
+              position: 'absolute',
+              textAlign: 'center',
+              width: '100%',
+              top: isMobile ? '10px' : '20px',
+              pointerEvents: 'none',
+            }}>
+              HELIOS 44-2 58mm f:2
+            </div>
+            <div style={{
+              color: 'rgba(255,255,255,0.25)',
+              fontSize: isMobile ? '5px' : '9px',
+              fontFamily: 'var(--font-mono)',
+              position: 'absolute',
+              textAlign: 'center',
+              width: '100%',
+              bottom: isMobile ? '10px' : '22px',
+              pointerEvents: 'none',
+            }}>
+              Nº 8213456
+            </div>
+            {renderHud(lensRef, "HELIOS_LENS", "GLASS_58MM")}
+          </div>
+        </motion.div>
+
+        {/* 6. Bright Green Glossy 3D Sphere (Right Side) */}
+        <motion.div 
+          ref={sphereRef}
+          drag
+          dragConstraints={containerRef}
+          dragElastic={0.1}
+          dragMomentum={false}
+          onDrag={() => setDragTick(t => t + 1)}
+          className="draggable-node"
+          style={{
+            position: 'absolute',
+            right: isMobile ? '8%' : '18%',
+            bottom: isMobile ? '50px' : '100px',
+            zIndex: 10,
+          }}
+        >
+          <div className="collage-sphere floating-slow" style={{
+            border: isMobile ? '1.5px solid var(--text-primary)' : '3px solid var(--text-primary)',
+            position: 'relative'
+          }}>
+            {renderHud(sphereRef, "GREEN_SPHERE", "3D_RENDER_BALL")}
+          </div>
+        </motion.div>
 
       </div>
 
@@ -310,13 +526,12 @@ export default function Hero({ setActiveView }) {
         </svg>
       </div>
 
-      {/* 3. HERO TYPOGRAPHY & INTRO DETAILS */}
+      {/* 2. THE MAIN TYPOGRAPHY / HEADLINE AREA */}
       <div style={{
-        maxWidth: '900px',
+        position: 'relative',
+        zIndex: 20,
         width: '100%',
-        textAlign: 'center',
         padding: '0 20px',
-        zIndex: 12,
         marginTop: '-30px',
       }}>
         {/* Intro Tag */}
@@ -393,18 +608,19 @@ export default function Hero({ setActiveView }) {
         <div style={{
           marginBottom: '80px',
           textAlign: 'center',
+          width: '100%',
         }}>
-          <h3 style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '13px',
-            color: 'var(--text-primary)',
-            fontWeight: '700',
-            marginBottom: '15px',
+          <p style={{
+            fontSize: isMobile ? '16px' : '20px',
+            lineHeight: '1.6',
+            color: 'var(--text-secondary)',
+            margin: '0 auto',
+            padding: '0 15px',
             textTransform: 'uppercase',
             letterSpacing: '1px',
           }}>
             🕹 BEFORE/AFTER GRADING SCRUBBER
-          </h3>
+          </p>
 
           <div
             ref={sliderContainerRef}
@@ -412,7 +628,6 @@ export default function Hero({ setActiveView }) {
             onTouchMove={handleTouchMove}
             style={{
               width: '100%',
-              maxWidth: '800px',
               height: 'clamp(180px, 45vw, 340px)',
               margin: '0 auto',
               position: 'relative',

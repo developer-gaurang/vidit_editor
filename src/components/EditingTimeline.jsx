@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const timelineClips = {
   V3: [
@@ -48,59 +49,73 @@ export default function EditingTimeline() {
   return (
     <section style={{
       padding: '80px 20px',
-      backgroundColor: 'var(--bg-deep)',
-      borderBottom: '2.5px solid var(--text-primary)',
-      backgroundImage: 'linear-gradient(rgba(30, 27, 75, 0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(30, 27, 75, 0.01) 1px, transparent 1px)',
-      backgroundSize: '20px 20px',
+      position: 'relative',
+      zIndex: 10
     }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ width: '100%', padding: '0 5vw', margin: '0 auto' }}>
         
         {/* Section Title */}
-        <div style={{ textAlign: 'center', marginBottom: '45px' }}>
-          <h2 className="title-glow" style={{
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{ textAlign: 'center', marginBottom: '45px' }}
+        >
+          <h2 style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '42px',
-            marginBottom: '15px'
+            fontSize: '48px',
+            marginBottom: '15px',
+            background: 'linear-gradient(135deg, #fff 0%, var(--color-primary) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            textShadow: '0 0 30px rgba(0, 240, 255, 0.4)'
           }}>
             ACTIVE TIMELINE SEQUENCE
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontWeight: '500' }}>
+          <p style={{ color: 'var(--text-secondary)', margin: '0 auto', fontSize: '16px' }}>
             Click on any timeline clip inside the editing tracks to inspect the breakdown, software workflow, and editorial decisions.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Timeline Panel Frame (Light) */}
-        <div style={{
-          backgroundColor: 'var(--bg-panel)',
-          border: '3px solid var(--text-primary)',
-          borderRadius: '12px',
-          overflow: 'hidden',
-          boxShadow: '6px 6px 0px var(--text-primary)',
-          display: 'flex',
-          flexDirection: 'column',
-          marginBottom: '35px',
-        }}>
+        {/* Timeline Panel Frame (Glassmorphism) */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          style={{
+            background: 'rgba(15, 15, 25, 0.6)',
+            border: '1px solid var(--border-muted)',
+            borderRadius: '16px',
+            overflow: 'hidden',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+            backdropFilter: 'blur(12px)',
+            display: 'flex',
+            flexDirection: 'column',
+            marginBottom: '35px',
+          }}
+        >
           
           {/* Timeline Titlebar */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '10px 20px',
-            backgroundColor: '#eae9e4',
-            borderBottom: '2.5px solid var(--text-primary)',
+            padding: '12px 20px',
+            background: 'rgba(0, 0, 0, 0.3)',
+            borderBottom: '1px solid var(--border-muted)',
             fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
-            color: 'var(--text-primary)',
-            fontWeight: 'bold',
+            fontSize: '12px',
+            color: '#fff',
+            fontWeight: '600',
           }}>
             <div style={{ display: 'flex', gap: '20px' }}>
-              <span style={{ color: 'var(--color-primary)', borderBottom: '2px solid var(--color-primary)', paddingBottom: '2px' }}>
+              <span style={{ color: 'var(--color-primary)', textShadow: '0 0 10px var(--color-primary)' }}>
                 Timeline: Cyberpunk_Edit_V3
               </span>
-              <span>Timecode: 00:00:24:18</span>
+              <span style={{ color: 'var(--text-secondary)' }}>Timecode: 00:00:24:18</span>
             </div>
-            <div style={{ display: 'flex', gap: '15px' }}>
+            <div style={{ display: 'flex', gap: '15px', color: 'var(--text-secondary)' }}>
               <span>V: 23.976 fps</span>
               <span>A: Stereo 48kHz</span>
             </div>
@@ -113,8 +128,8 @@ export default function EditingTimeline() {
           {/* Time Ruler (Seconds indicators) */}
           <div style={{
             height: '25px',
-            borderBottom: '1.5px solid var(--text-primary)',
-            backgroundColor: '#f3f2ee',
+            borderBottom: '1px solid var(--border-muted)',
+            background: 'rgba(0, 0, 0, 0.2)',
             position: 'relative',
             paddingLeft: '110px',
           }}>
@@ -272,7 +287,7 @@ export default function EditingTimeline() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
         {/* Effect Controls Panel */}
         <div style={{

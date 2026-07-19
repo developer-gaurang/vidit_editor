@@ -1,41 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;700&display=swap');
 
 /* Color theme variables */
-.theme-light {
-  --bg-pitch: #e8e7e3;      /* Darker cream for lines */
-  --bg-deep: #faf9f6;       /* Warm eggshell white background */
-  --bg-panel: #ffffff;      /* Clean pure white for panels */
-  --bg-surface: #f3f2ee;    /* Matte light grey-cream for buttons */
-  --bg-surface-hover: #e5e3db;
+.theme-light, .theme-dark {
+  /* Complete Futuristic Dark/Neon Theme */
+  --bg-pitch: #020204;
+  --bg-deep: #07070a;
+  --bg-panel: rgba(10, 10, 18, 0.7);
+  --bg-surface: rgba(20, 20, 35, 0.8);
+  --bg-surface-hover: rgba(30, 30, 50, 0.9);
   
-  --text-primary: #1e1b4b;    /* Deep Indigo for high contrast */
-  --text-secondary: #475569;  /* Muted Slate Slate */
-  --text-muted: #94a3b8;      /* Light border grey */
-  --border-muted: #e2e8f0;    /* Crisp light border */
-}
-
-.theme-dark {
-  /* Rich Matte Black Theme with Bright Neon Accents */
-  --bg-pitch: #111116;      /* Rich dark slate lines */
-  --bg-deep: #060608;       /* Deep matte black background */
-  --bg-panel: #0d0d12;      /* Pure black panel bases */
-  --bg-surface: #171721;    /* Saturated slate grey for buttons */
-  --bg-surface-hover: #222230;
-  
-  --text-primary: #ffffff;    /* Stark bright white */
-  --text-secondary: #94a3b8;  /* Vibrant slate secondary text */
-  --text-muted: #475569;      /* Dark border slate */
-  --border-muted: #242c3d;    /* Charcoal border lines */
+  --text-primary: #e0fbfc;
+  --text-secondary: #90e0ef;
+  --text-muted: #48cae4;
+  --border-muted: rgba(0, 240, 255, 0.2);
 }
 
 :root {
-  --color-primary: #2563eb;   /* Royal Blue */
-  --color-secondary: #ec4899; /* Hot Pink */
-  --color-accent: #ef4444;    /* Vibrant Red */
-  --color-success: #10b981;   /* Emerald Green */
-  --color-orange: #f97316;    /* Amber Orange */
+  --color-primary: #00f0ff;   /* Cyber Cyan */
+  --color-secondary: #ff0055; /* Neon Magenta */
+  --color-accent: #7000ff;    /* Deep Purple */
+  --color-success: #00ffaa;   /* Matrix Green */
+  --color-orange: #ff5500;    /* Cyber Orange */
   
-  --border-glow: rgba(37, 99, 235, 0.15);
+  --border-glow: rgba(0, 240, 255, 0.5);
   
   /* Fonts */
   --font-display: 'Syne', sans-serif;
@@ -154,12 +141,13 @@ html, body {
   overflow: hidden;
   transition: all 0.2s ease;
   z-index: 1;
-  box-shadow: 3px 3px 0px var(--text-primary);
+  box-shadow: 0 0 10px var(--border-glow), 0 0 20px rgba(0,0,0,0.5) inset;
+  border: 1px solid var(--color-primary);
 }
 
 .glow-btn:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0px var(--color-secondary);
+  box-shadow: 0 0 20px var(--color-secondary), 0 0 30px var(--color-secondary) inset;
   border-color: var(--color-secondary);
   color: var(--color-secondary);
 }
@@ -178,7 +166,8 @@ html, body {
   transition: all 0.2s ease;
   display: inline-block;
   text-align: center;
-  box-shadow: 3px 3px 0px var(--text-primary);
+  box-shadow: 0 0 15px var(--color-primary);
+  border: 1px solid var(--color-primary);
 }
 
 .glow-btn-solid:hover {
@@ -186,66 +175,54 @@ html, body {
   background-color: var(--bg-panel);
   color: var(--color-primary);
   border-color: var(--color-primary);
-  box-shadow: 5px 5px 0px var(--color-primary);
+  box-shadow: 0 0 25px var(--color-primary), 0 0 15px var(--color-primary) inset;
 }
 
-/* Premiere NLE Panel Wrappers */
-.nle-panel {
-  background-color: var(--bg-panel);
-  border: 3px solid var(--text-primary);
-  border-radius: 12px;
+/* Futuristic Glass Panel */
+.glass-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-muted);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 6px 6px 0px var(--text-primary);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   margin-bottom: 60px;
   transition: all 0.3s ease;
+  position: relative;
 }
 
-.nle-panel-header {
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.glass-panel-header {
   display: flex;
   justify-content: space-between;
-  alignItems: center;
-  background-color: #eae9e4;
-  border-bottom: 2.5px solid var(--text-primary);
-  height: 38px;
-  padding: 0;
-  user-select: none;
-}
-
-.theme-dark .nle-panel-header {
-  background-color: #1c1c24; /* Darker header in dark mode */
-}
-
-.nle-panel-tabs {
-  display: flex;
-  height: 100%;
-  align-items: flex-end;
-}
-
-.nle-panel-tab {
-  height: 100%;
-  display: flex;
   align-items: center;
-  padding: 0 16px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: bold;
-  color: var(--text-primary);
-  border-right: 2px solid var(--text-primary);
-  cursor: pointer;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border-muted);
+  background: rgba(0, 0, 0, 0.2);
 }
 
-.nle-panel-tab.active {
-  background-color: var(--bg-panel);
-  border-bottom: 3.5px solid var(--bg-panel);
-  margin-bottom: -1px;
-  z-index: 2;
-}
-
-.nle-panel-menu-dot {
+.glass-panel-title {
+  font-family: var(--font-display);
   font-size: 14px;
-  color: var(--text-secondary);
-  padding-right: 15px;
-  cursor: pointer;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px var(--border-glow);
 }
 
 /* Sticky vertical NLE tools toolbox */
@@ -869,13 +846,143 @@ html, body {
     background-image: none !important;
   }
   
-  /* Downscale the collage absolute items */
-  .floating-slow, .floating-medium, .floating-fast, .collage-lens, .collage-ps-icon, .collage-color-wheel, .collage-sphere {
-    display: none !important; /* Hide floating collage blocks on mobile for layout readability */
+  /* Downscale and adjust the collage absolute items for mobile screens */
+  .collage-lens {
+    width: 110px !important;
+    height: 110px !important;
+    border-width: 6px !important;
+  }
+  
+  .collage-color-wheel {
+    width: 90px !important;
+    height: 90px !important;
+    border-width: 4px !important;
+  }
+  
+  .collage-ps-icon {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 24px !important;
+    border-width: 2px !important;
+    border-radius: 10px !important;
+  }
+  
+  .collage-sphere {
+    width: 65px !important;
+    height: 65px !important;
+  }
+  
+  .collage-color-checker {
+    width: 80px !important;
+    height: 58px !important;
+    border-width: 1.5px !important;
+  }
+
+  .floating-slow, .floating-medium, .floating-fast {
+    animation-play-state: paused; /* Pause aggressive animations on mobile for smoother drag */
   }
   
   .timeline-track::before {
     font-size: 10px !important;
   }
 }
+
+/* Cybernetic HUD labels and drag utilities */
+.hud-label {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 13, 18, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: #00f0ff;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+  z-index: 10;
+  transition: opacity 0.2s ease;
+}
+
+.hud-badge {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(236, 72, 153, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(236, 72, 153, 0.4);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.draggable-node {
+  cursor: grab;
+  touch-action: none; /* Prevent scrolling when dragging on mobile */
+  transition: box-shadow 0.3s ease;
+}
+
+.draggable-node:active {
+  cursor: grabbing;
+}
+
+/* Neon glow enhancements for collage items */
+.collage-ps-icon {
+  box-shadow: 0 0 15px rgba(0, 168, 255, 0.4), inset 0 0 10px rgba(0, 168, 255, 0.2), 0 8px 20px rgba(0,0,0,0.25);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.collage-ps-icon:hover {
+  border-color: #00f0ff;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.7), inset 0 0 12px rgba(0, 240, 255, 0.3), 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.collage-color-wheel {
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.4), 0 10px 20px rgba(0,0,0,0.15);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.collage-color-wheel:hover {
+  border-color: #ec4899;
+  box-shadow: 0 0 30px rgba(236, 72, 153, 0.75), 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.collage-lens {
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.3), 0 10px 25px rgba(0,0,0,0.3), inset 0 0 25px rgba(255,255,255,0.15);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.collage-lens:hover {
+  border-color: #2563eb;
+  box-shadow: 0 0 35px rgba(37, 99, 235, 0.65), 0 10px 25px rgba(0,0,0,0.3), inset 0 0 25px rgba(255,255,255,0.15);
+}
+
+.collage-sphere {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 10px 20px rgba(0,0,0,0.15), inset -5px -5px 15px rgba(0,0,0,0.4);
+  transition: box-shadow 0.3s;
+}
+
+.collage-sphere:hover {
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.65), 0 10px 20px rgba(0,0,0,0.15), inset -5px -5px 15px rgba(0,0,0,0.4);
+}
+
+.collage-color-checker {
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.collage-color-checker:hover {
+  border-color: #f97316;
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.5), 0 8px 16px rgba(0,0,0,0.15);
+}
+
 
