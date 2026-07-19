@@ -13,7 +13,7 @@ import ContactForm from './components/ContactForm';
 import AdminPanel from './components/AdminPanel';
 
 export default function App() {
-  const [theme, setTheme] = useState('light'); // light or dark
+  const [theme, setTheme] = useState('dark'); // permanently dark mode
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState('home');
   const [activeTool, setActiveTool] = useState('select'); // select (V), razor (C), pen (P), hand (H), text (T)
@@ -95,7 +95,6 @@ export default function App() {
         activeView={activeView === 'admin' ? 'admin' : activeView} 
         setActiveView={handleNavigate} 
         theme={theme} 
-        setTheme={setTheme} 
         soundEnabled={soundEnabled}
         toggleSound={toggleSound}
       />

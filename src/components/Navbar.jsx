@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Navbar({ activeView, setActiveView, theme, setTheme, soundEnabled, toggleSound }) {
+export default function Navbar({ activeView, setActiveView, theme, soundEnabled, toggleSound }) {
   const menuItems = [
     { id: 'home', label: '01. Home' },
     { id: 'about', label: '02. Profile' },
@@ -50,26 +50,7 @@ export default function Navbar({ activeView, setActiveView, theme, setTheme, sou
         
         {/* Toggle Mode and status indicators */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          {/* Theme switcher trigger */}
-          <button
-            onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
-            style={{
-              backgroundColor: 'var(--bg-panel)',
-              color: 'var(--text-primary)',
-              border: '1.5px solid var(--text-primary)',
-              borderRadius: '4px',
-              padding: '3px 10px',
-              fontSize: '10px',
-              fontFamily: 'var(--font-mono)',
-              fontWeight: 'bold',
-              boxShadow: '1.5px 1.5px 0px var(--text-primary)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
-          >
-            {theme === 'light' ? '🌙 BLACK THEME' : '☀️ LIGHT THEME'}
-          </button>
+
 
           {/* Sound switcher trigger */}
           <button
